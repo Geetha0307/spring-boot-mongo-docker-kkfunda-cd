@@ -4,8 +4,8 @@ pipeline {
     stages {
         stage('Checkout from GitHub') {
             steps {
-                git branch: 'main', 
-                    url: 'https://github.com/kkdevopsb7/spring-boot-mongo-docker-kkfunda-cd.git'
+                git branch: 'dev', 
+                    url: 'https://github.com/Geetha0307/spring-boot-mongo-docker-kkfunda-cd.git'
             }
         }
 
@@ -31,16 +31,23 @@ pipeline {
             }
         }
 
-        stage('Verify Pods and Services') {
-            steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
-                                  credentialsId: 'aws-eks-cred']]) {
-                    sh '''
-                        kubectl get pods
-                        kubectl get svc
-                    '''
-                }
+      stage('Verify Pods and Services') {
+    steps {
+        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
+                          credentialsId: 'aws-eks-cred']]) {
+            sh '''
+                echo "Waiting for pods to be ready..."
+                kubectl wait --for=condition=Ready pods --all --timeout=120s
+
+                echo "Pods status:"
+                kubectl get pods -o wide
+
+                echo "Services status:"
+                kubectl get svc
+            '''
+                    }
             }
         }
+
     }
 }
