@@ -60,7 +60,7 @@ spec:
     spec:
       containers:
       - name: springappcontainer
-        image: geetha0307/springapp:1.0.0
+        image: geetha0307/webapps:latest
         ports:
         - containerPort: 8080
         env:
