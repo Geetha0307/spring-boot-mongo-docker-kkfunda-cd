@@ -60,7 +60,7 @@ spec:
     spec:
       containers:
       - name: springappcontainer
-        image: geetha0307/mongospring:latest
+        image: geetha0307/springapp:1.0.0
         ports:
         - containerPort: 8080
         env:
